@@ -4,7 +4,7 @@ import { AddShoppingCart } from "@material-ui/icons";
 
 import useStyles from './styles';
 
-
+//fonction des produits 
 const Product = ({ product ,onAddToCart }) => {
     const classes = useStyles();
 

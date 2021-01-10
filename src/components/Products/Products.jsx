@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 import Product from './Product/Product';
 import useStyles from './styles';
 
-
+//fonction represente le conteneur des produits 
 const Products = ({ products , onAddToCart }) => {
     const classes = useStyles();
     return (
