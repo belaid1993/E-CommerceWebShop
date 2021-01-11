@@ -3,7 +3,7 @@ import { commerce } from './lib/commerce';
 
 
 
-import { Products, Navbar } from './components';
+import { Products, Navbar, Cart } from './components';
 
 const App = () => {
 
@@ -21,8 +21,6 @@ const App = () => {
         setCart(await commerce.cart.retrieve())
     }
 
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",commerce.cart.retrieve());
-
     useEffect(() => {
         fetchProducts();
         fetchCart();
@@ -34,12 +32,11 @@ const App = () => {
         setCart(item.cart)
     }
 
-    console.log(cart)
-
     return (
         <div>
             <Navbar totalItems={cart.total_items} />
-            <Products products={products} onAddToCart={handleAddToCart} />
+            {/*<Products products={products} onAddToCart={handleAddToCart} />*/}
+            <Cart cart={cart}/>
         </div>
     )
 }
