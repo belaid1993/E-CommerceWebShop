@@ -28,8 +28,26 @@ const App = () => {
 
     //fonction pour ajouter les produits
     const handleAddToCart = async (productId, quantity) => {
-        const item = await commerce.cart.add(productId, quantity)
-        setCart(item.cart)
+        const response = await commerce.cart.add(productId, quantity)
+        setCart(response.cart)
+    }
+
+    //mise a jour la quantity de produit
+    const handleUpdateCartQty = async (productId, quantity) => {
+        const response = await commerce.cart.update(productId, { quantity })
+        setCart(response.cart)
+    }
+
+    //supression d'un produit
+    const handleRemoveFromCart = async (productId) => {
+        const response = await commerce.cart.remove(productId)
+        setCart(response.cart)
+    }
+
+    //vider la cart
+    const handleEmptyCart = async () => {
+        const response = await commerce.cart.empty()
+        setCart(response.cart)
     }
 
     return (
@@ -41,12 +59,14 @@ const App = () => {
                         <Products products={products} onAddToCart={handleAddToCart} />
                     </Route>
                     <Route exact path="/cart">
-                          <Cart cart={cart} />
+                        <Cart
+                            cart={cart}
+                            handleUpdateCartQty={handleUpdateCartQty}
+                            handleRemoveFromCart={handleRemoveFromCart}
+                            handleEmptyCart={handleEmptyCart}
+                        />
                     </Route>
-                    
-                  
                 </Switch>
-
             </div>
         </Router>
     )
