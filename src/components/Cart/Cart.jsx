@@ -26,7 +26,7 @@ const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart
                 <Typography variant="h4" >Subtotal : {cart.subtotal.formatted_with_symbol}</Typography>
                 <div>
                     <Button className={classes.emptyButton} type="button" size="large" variant="contained" color="secondary" onClick={handleEmptyCart}>Empty Card</Button>
-                    <Button className={classes.checkout} type="button" size="large" variant="contained" color="primary">Checkout</Button>
+                    <Button component={Link} to="/checkout" className={classes.checkout} type="button" size="large" variant="contained" color="primary">Checkout</Button>
 
                 </div>
             </div>
