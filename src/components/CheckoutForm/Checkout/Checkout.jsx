@@ -34,10 +34,11 @@ const Checkout = ({ cart }) => {
         nextStep();
     }
 
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> : <PaymentForm shippingData={shippingData} />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> :
+        <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
     const Confirmation = () => <div>Confirmation</div>
     return (
-        <d>
+        <>
             <div className={classes.toolbar}></div>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
@@ -53,7 +54,7 @@ const Checkout = ({ cart }) => {
                 </Paper>
 
             </main>
-        </d>
+        </>
     )
 }
 
