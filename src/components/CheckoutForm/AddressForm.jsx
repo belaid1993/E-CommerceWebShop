@@ -36,7 +36,7 @@ const AddressForm = ({ checkoutToken, next }) => {
     const fetchShippingOptions = async (checkoutTokenId, country, region = null) => {
         const options = await commerce.checkout.getShippingOptions(checkoutTokenId, { country, region })
         setShippingOptions(options);
-        setShippingOption(options[0].id);
+        setShippingOption(options.id);
     }
 
     useEffect(() => {
@@ -57,12 +57,14 @@ const AddressForm = ({ checkoutToken, next }) => {
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit((data) => next({ ...data, shippingCountry, shippingSubdivision, shippingOption }))}>
                     <Grid container spacing={3}>
+                        
                         <FormInput name='firstName' label='First name' />
                         <FormInput name='lastName' label='Last name' />
                         <FormInput name='address1' label='Address' />
                         <FormInput name='email' label='Email' />
                         <FormInput name='city' label='City' />
                         <FormInput name='zip' label='ZIP / Postal code' />
+
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Country</InputLabel>
                             <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
