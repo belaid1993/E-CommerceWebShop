@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from "@material-ui/core";
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, CssBaseline } from "@material-ui/core";
 import useStyles from './styles';
 import AddressForm from '../AddressForm';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
 
@@ -12,7 +12,9 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const [activeStep, setActiveStep] = useState(0)
     const [checkoutToken, setCheckoutToken] = useState(null)
     const [shippingData, setShippingData] = useState({})
+    const [isFinished, setIsFinished] = useState(false)
     const classes = useStyles()
+    const history = useHistory()
 
     useEffect(() => {
         const generateToken = async () => {
@@ -20,7 +22,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' })
                 setCheckoutToken(token)
             } catch (error) {
-
+                history.pushState('/')
             }
         }
 
@@ -35,8 +37,14 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep();
     }
 
+    const timeout = () => {
+        setTimeout(() => {
+            setIsFinished(true);
+        }, 3000)
+    }
+
     const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> :
-        <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} onCaptureCheckout={onCaptureCheckout} />
+        <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} timeout={timeout} onCaptureCheckout={onCaptureCheckout} />
 
     let Confirmation = () => order.customer ? (
 
@@ -50,11 +58,21 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
             <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
         </>
 
-    ) : (
-            <div className={classes.spinner}>
-                <CircularProgress />
+    ) : isFinished ? (
+        <>
+            <div>
+                <Typography variant="h5">Thank you for your purchase.</Typography>
+                <Divider className={classes.divider} />
             </div>
-        );
+            <br />
+            <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
+        </>
+
+    ) : (
+                <div className={classes.spinner}>
+                    <CircularProgress />
+                </div>
+            );
 
 
     if (error) {
@@ -66,7 +84,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         </>
     }
     return (
-        <d>
+        <>
+            <CssBaseline />
             <div className={classes.toolbar}></div>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
@@ -82,7 +101,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 </Paper>
 
             </main>
-        </d>
+        </>
     )
 }
 
